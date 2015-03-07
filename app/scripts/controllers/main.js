@@ -1,21 +1,30 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('MainCtrl', function($scope, Client, PipeService, ModalService) {
+  .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, ModalService) {
 
     $scope.uploadingFiles = [];
 
+    Client.setSessionId($window.unescape($location.search().token));
+
+    $scope.goToSettings = function() {
+      $location.path('/settings');
+    };
+
     $scope.upload = function(file) {
       var commands = 'encrypt --privkey=' + Client.getPrivateKeyPath();
-      var filename = file.name.substring(file.name.lastIndexOf('/')+1);
+      var filename = file.name.substring(file.name.lastIndexOf('/') + 1);
       var outputFilename = Client.getSourcePath() + filename;
+
+      file.status = 'Uploading file';
+
       PipeService.run(commands, undefined, file.name, outputFilename)
-            .success(function() {
-            file.status = 'Completed';
-          })
-          .error(function() {
-            file.status = 'Failed upload file';
-          });
+        .success(function() {
+          file.status = 'Completed';
+        })
+        .error(function() {
+          file.status = 'Failed to upload file';
+        });
     };
 
     $scope.cancel = function(file) {

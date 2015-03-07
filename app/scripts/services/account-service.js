@@ -8,8 +8,8 @@ angular.module('safeApp')
     };
 
     this.fetchFileinfo = function(accountId, path) {
-      return $http.get('/api/' + 'fileinfo' );
-      //return $http.get('/api/account/' + accountId + '/file_info/' + path);
+      //return $http.get('/api/' + 'fileinfo' );
+      return $http.get('/api/account/' + accountId + '/file_info/' + path);
     };
 
   });

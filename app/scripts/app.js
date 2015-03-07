@@ -11,7 +11,7 @@ angular
     'angularModalService',
     'apiMock'
   ])
-  .config(function ($routeProvider) {
+  .config(function($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -29,3 +29,7 @@ angular
         redirectTo: '/'
       });
   });
+
+angular.module('safeApp').config(function($httpProvider) {
+  $httpProvider.interceptors.push('AuthInterceptor');
+});
