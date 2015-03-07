@@ -1,0 +1,18 @@
+{
+  "path": "",
+  "files": [{
+    "name": "skyraid",
+    "path": "skyraid",
+    "isDir": true,
+    "size": 4096,
+    "type": "undefined",
+    "modified": ""
+  },{
+    "name": "file",
+    "path": "/file",
+    "isDir": false,
+    "size": 4096,
+    "type": "undefined",
+    "modified": ""
+  }]
+}
