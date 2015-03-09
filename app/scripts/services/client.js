@@ -3,7 +3,10 @@
 angular.module('safeApp')
   .service('Client', function Client() {
 
+    var _docletId;
     var _sessionId;
+
+    var _settings;
 
     var _sourcePath;
     var _publicKeyPath;
@@ -20,12 +23,28 @@ angular.module('safeApp')
       _sessionId = undefined;
     };
 
+    this.setDocletId = function(docletId) {
+      _docletId = docletId;
+    };
+
+    this.getDocletId = function() {
+      return _docletId;
+    };
+
     this.setSessionId = function(sessionId) {
       _sessionId = sessionId;
     };
 
     this.getSessionId = function() {
       return _sessionId;
+    };
+
+    this.setSettings = function(settings) {
+      _settings = settings;
+    };
+
+    this.getSettings = function() {
+      return _settings;
     };
 
     this.setSourcePath = function(sourcePath) {

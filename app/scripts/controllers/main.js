@@ -1,11 +1,38 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, ModalService) {
+  .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, SettingsService, ModalService) {
 
     $scope.uploadingFiles = [];
 
+    Client.setDocletId($location.search().docletId);
     Client.setSessionId($window.unescape($location.search().token));
+
+    $scope.init = function() {
+
+      SettingsService.getSettings()
+        .success(function(settings) {
+          Client.setSettings(settings);
+        })
+        .error(function(response, status) {
+          // The first time there is no saved settings, so a 404 is expected here
+          if (status === 404) {
+            // Create the settings table
+            SettingsService.initSettings()
+              .success(function() {
+                // Table created
+              })
+              .error(function() {
+                $scope.error = 'Failed to init settings';
+              });
+          } else {
+            $scope.error = 'Failed to fetch settings' + status;
+          }
+        });
+    };
+
+    // Invoke init to fetch the needed data
+    $scope.init();
 
     $scope.goToSettings = function() {
       $location.path('/settings');

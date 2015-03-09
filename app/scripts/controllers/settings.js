@@ -1,17 +1,21 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('SettingsCtrl', function ($scope, $location, Client) {
+  .controller('SettingsCtrl', function($scope, $location, Client, SettingsService) {
 
-    $scope.sourcePath = Client.getSourcePath();
-    $scope.publicKeyPath = Client.getPublicKeyPath();
-    $scope.privateKeyPath = Client.getPrivateKeyPath();
+    $scope.settings = Client.getSettings();
 
     $scope.done = function() {
-    	Client.setSourcePath($scope.sourcePath);
-    	Client.setPublicKeyPath($scope.publicKeyPath);
-    	Client.setPrivateKeyPath($scope.privateKeyPath);
-    	$location.path('/');
+
+      SettingsService.saveSettings($scope.settings)
+        .success(function() {
+            
+          Client.setSettings($scope.settings);
+          $location.path('/');
+        })
+        .error(function() {
+            $scope.error = 'Failed to save settings';
+        });
     };
 
   });
