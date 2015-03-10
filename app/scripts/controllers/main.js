@@ -18,7 +18,6 @@ angular.module('safeApp')
           // The first time there is no saved settings, so a 404 is expected here
           if (status === 404) {
             // Expected
-
           } else {
             $scope.error = 'Failed to fetch settings' + status;
           }
