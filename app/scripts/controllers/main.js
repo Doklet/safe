@@ -17,14 +17,8 @@ angular.module('safeApp')
         .error(function(response, status) {
           // The first time there is no saved settings, so a 404 is expected here
           if (status === 404) {
-            // Create the settings table
-            SettingsService.initSettings()
-              .success(function() {
-                // Table created
-              })
-              .error(function() {
-                $scope.error = 'Failed to init settings';
-              });
+            // Expected
+
           } else {
             $scope.error = 'Failed to fetch settings' + status;
           }

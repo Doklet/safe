@@ -1,44 +1,20 @@
 'use strict';
 
 angular.module('safeApp')
-  .service('SettingsService', function SettingsService($http, $log, Client) {
-
-    this.initSettings = function() {
-
-      var docletId = Client.getDocletId();
-      var tableId = docletId + '.settings';
-
-      var definition = {
-        name: 'settings',
-        docletId: docletId,
-        type: 'dets',
-        key: 1,
-        columns: ['id', 'sourcePath', 'publicKeyPath', 'privateKeyPath']
-      };
-
-      return $http.put('/api/doclet/' + docletId + '/table/' + tableId, definition);
-    };
+  .service('SettingsService', function SettingsService($http, Client) {
 
     this.getSettings = function() {
 
-      // The unique id of the table is $(docletId).settings
-      var tableId = Client.getDocletId() + '.settings';
+      var docletId = Client.getDocletId();
 
-      return $http.get('/api/doclet/table/' + tableId + '/Row/0');
+      return $http.get('/api/doclet/' + docletId + '/bucket/data/settings');
     };
 
     this.saveSettings = function(settings) {
 
-      var setting = {
-        id: '0',
-        sourcePath: settings.sourcePath,
-        publicKeyPath: settings.publicKeyPath,
-        privateKeyPath: settings.privateKeyPath
-      };
+      var docletId = Client.getDocletId();
 
-      var tableId = Client.getDocletId() + '.settings';
-
-      return $http.put('/api/doclet/table/' + tableId + '/row/0', setting);
+      return $http.put('/api/doclet/' + docletId + '/bucket/data/settings', settings);
     };
 
   });
