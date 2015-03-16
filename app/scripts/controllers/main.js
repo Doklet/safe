@@ -34,7 +34,7 @@ angular.module('safeApp')
     $scope.upload = function(file) {
       var commands = 'encrypt --privkey=' + Client.getPrivateKeyPath();
       var filename = file.name.substring(file.name.lastIndexOf('/') + 1);
-      var outputFilename = Client.getSourcePath() + filename;
+      var outputFilename = Client.getSourcePath() + '/' + filename;
 
       file.status = 'Uploading file';
 
@@ -57,7 +57,11 @@ angular.module('safeApp')
       // Just provide a template url, a controller and call 'showModal'.
       ModalService.showModal({
         templateUrl: 'views/filedialog.html',
-        controller: 'FiledialogCtrl'
+        controller: 'FiledialogCtrl',
+        inputs: {
+            dialogType: 'file',
+            dialogTitle: 'Select file to add'
+        }
       }).then(function(modal) {
         // The modal object has the element built, if this is a bootstrap modal
         // you can call 'modal' to show it, if it's a custom modal just show or hide

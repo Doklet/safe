@@ -8,10 +8,6 @@ angular.module('safeApp')
 
     var _settings;
 
-    var _sourcePath;
-    var _publicKeyPath;
-    var _privateKeyPath;
-
     var _fileinfos = [{
       name: 'File1',
       modified: 'Modified',
@@ -47,28 +43,16 @@ angular.module('safeApp')
       return _settings;
     };
 
-    this.setSourcePath = function(sourcePath) {
-      _sourcePath = sourcePath;
-    };
-
     this.getSourcePath = function() {
-      return _sourcePath;
-    };
-
-    this.setPublicKeyPath = function(publicKeyPath) {
-      _publicKeyPath = publicKeyPath;
+      return _settings.sourcePath;
     };
 
     this.getPublicKeyPath = function() {
-      return _publicKeyPath;
-    };
-
-    this.setPrivateKeyPath = function(privateKeyPath) {
-      _privateKeyPath = privateKeyPath;
+      return _settings.publicKeyPath;
     };
 
     this.getPrivateKeyPath = function() {
-      return _privateKeyPath;
+      return _settings.privateKeyPath;
     };
 
     this.setFileInfos = function(fileinfos) {

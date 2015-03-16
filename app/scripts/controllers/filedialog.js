@@ -1,10 +1,18 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('FiledialogCtrl', function($scope, close, AccountService) {
+  .controller('FiledialogCtrl', function($scope, close, AccountService, dialogType, dialogTitle) {
+
+    var DialogType = {
+      file: 'file',
+      folder: 'folder'
+    };
 
     $scope.fileinfos = [];
     $scope.accounts = [];
+
+    $scope.type = dialogType;
+    $scope.title = dialogTitle;
 
     $scope.selected = {
       account: undefined,
@@ -74,9 +82,8 @@ angular.module('safeApp')
     };
 
     $scope.fileSelected = function(selectedFile) {
-      if (selectedFile.isDir === true) {
-        $scope.selected.file = undefined;
 
+      if (selectedFile.isDir === true) {
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo($scope.selected.account.id, selectedFile.path)
           .success(function(result) {
@@ -92,8 +99,18 @@ angular.module('safeApp')
             $scope.info = undefined;
             $scope.error = 'Failed to fetch fileinfo';
           });
+
+        // Set the selected file depending on the dialog type
+        if ($scope.type === DialogType.file) {
+          $scope.selected.file = undefined;
+        } else {
+          $scope.selected.file = selectedFile;
+        }
       } else {
-        $scope.selected.file = selectedFile;
+        // Set the selected file if this is a file dialog
+        if ($scope.type === DialogType.file) {
+          $scope.selected.file = selectedFile;
+        }
       }
     };
 

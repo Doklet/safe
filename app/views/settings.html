@@ -1,3 +1,9 @@
+<div class="alert alert-danger" ng-show="error!=undefined">
+  <button type="button" class="close" ng-click="error=undefined"><span>&times;</span>
+  </button>
+  {{error}}
+</div>
+
 <div class="header">
   <ul class="nav nav-pills pull-right">
     <li><a ng-click="done()">Done</a>
@@ -6,18 +12,45 @@
   <h3 class="text-muted">Settings</h3>
 </div>
 
-<form>
+<form class="form-horizontal">
+
+  <!--  Source folder -->
   <div class="form-group">
-    <label>Source Folder</label>
-    <input type="text" class="form-control" ng-model="settings.sourcePath" placeholder="Enter path to source folder">
+    <div class="col-sm-12">
+      <label>Source Folder</label>
+    </div>
+    <div class="col-sm-12">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="settings.sourcePath" placeholder="Enter path to source folder" />
+        <span class="input-group-addon" ng-click="browseSourceDir()">...</span>
+      </div>
+    </div>
   </div>
+
+  <!--  Public key -->
   <div class="form-group">
-    <label>Public Key</label>
-    <input type="text" class="form-control" ng-model="settings.publicKeyPath" placeholder="Enter path to public key">
+    <div class="col-sm-12">
+      <label>Public Key</label>
+    </div>
+    <div class="col-sm-12">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="settings.publicKeyPath" placeholder="Enter path to public key" />
+        <span class="input-group-addon" ng-click="browsePublicKey()">...</span>
+      </div>
+    </div>
   </div>
+
+  <!--  Private key -->
   <div class="form-group">
-    <label>Private Key</label>
-    <input type="text" class="form-control" ng-model="settings.privateKeyPath" placeholder="Enter path to private key">
+    <div class="col-sm-12">
+      <label>Private Key</label>
+    </div>
+    <div class="col-sm-12">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="settings.privateKeyPath" placeholder="Enter path to private key"/>
+        <span class="input-group-addon" ng-click="browsePrivateKey()">...</span>
+      </div>
+    </div>
   </div>
-  
+
 </form>
