@@ -52,8 +52,8 @@ angular.module('safeApp')
         $scope.fileinfos = undefined;
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo(breadcrumbPath.accountId, breadcrumbPath.path)
-          .success(function(result) {
-            $scope.fileinfos = result.files;
+          .success(function(files) {
+            $scope.fileinfos = files;
           })
           .error(function() {
             $scope.fileinfos = [];
@@ -86,8 +86,8 @@ angular.module('safeApp')
       if (selectedFile.isDir === true) {
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo($scope.selected.account.id, selectedFile.path)
-          .success(function(result) {
-            $scope.fileinfos = result.files;
+          .success(function(files) {
+            $scope.fileinfos = files;
 
             $scope.breadcrumbPath.push({
               name: selectedFile.name,
