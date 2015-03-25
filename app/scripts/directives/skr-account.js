@@ -3,7 +3,12 @@
 angular.module('safeApp')
   .controller('skrAccountCtrl', function($scope, $location, Client) {
 
+    $scope.selectedFile = undefined;
     $scope.fileinfos = Client.getFileInfos();
+
+    $scope.fileSelected = function(fileinfo) {
+      $scope.selectedFile = fileinfo;
+    };
 
   });
 

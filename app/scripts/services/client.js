@@ -8,12 +8,7 @@ angular.module('safeApp')
 
     var _settings;
 
-    var _fileinfos = [{
-      name: 'File1',
-      modified: 'Modified',
-      size: 12
-    }];
-
+    var _fileinfos = [];
 
     this.reset = function() {
       _sessionId = undefined;

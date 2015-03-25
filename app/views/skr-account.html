@@ -5,7 +5,7 @@
     <td>Size</td>
   </thead>
   <tbody>
-    <tr ng-repeat="file in fileinfos" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
+    <tr ng-repeat="file in fileinfos" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selectedFile }">
       <td>
         <image src="images/folder.png" width="32px" height="32px" ng-if="file.isDir"></image>
         <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>

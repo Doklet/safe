@@ -12,4 +12,12 @@ angular.module('safeApp')
       return $http.get('/api/account/' + accountId + '/file_info/' + path);
     };
 
+    this.getFileinfo = function(path) {
+      return $http.get('/api/file_info/' + path);
+    };
+
+    this.getFile = function(path) {
+    	return $http.get('/api/file/' + path);
+    };
+
   });

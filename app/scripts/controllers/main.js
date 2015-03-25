@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, SettingsService, ModalService) {
+  .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, AccountService, SettingsService, ModalService) {
 
     $scope.uploadingFiles = [];
+    $scope.fileinfos = [];
+    $scope.selectedFile = undefined;
 
     Client.setDocletId($location.search().docletId);
     Client.setSessionId($window.unescape($location.search().token));
@@ -13,6 +15,15 @@ angular.module('safeApp')
       SettingsService.getSettings()
         .success(function(settings) {
           Client.setSettings(settings);
+
+          AccountService.getFileinfo(settings.sourcePath)
+            .success(function(fileinfo) {
+              Client.setFileInfos(fileinfo);
+              $scope.fileinfos = fileinfo;
+            })
+            .error(function() {
+              $scope.error = 'Failed to get info about encrypted files';
+            });
         })
         .error(function(response, status) {
           // The first time there is no saved settings, so a 404 is expected here
@@ -26,6 +37,10 @@ angular.module('safeApp')
 
     // Invoke init to fetch the needed data
     $scope.init();
+
+    $scope.fileSelected = function(fileinfo) {
+      $scope.selectedFile = fileinfo;
+    };
 
     $scope.goToSettings = function() {
       $location.path('/settings');
@@ -47,6 +62,15 @@ angular.module('safeApp')
         });
     };
 
+    $scope.computeFileUrl = function(fileinfo) {
+      return '/api/file/' + Client.getSourcePath() + '/' + fileinfo.name + '?token=' + Client.getSessionId();
+    };
+
+    $scope.download = function(fileinfo) {
+      var filepath = Client.getSourcePath() + '/' + fileinfo.name;
+      AccountService.getFile(filepath);
+    };
+
     $scope.cancel = function(file) {
       var index = $scope.uploadingFiles.indexOf(file);
       $scope.uploadingFiles.splice(index, 1);
@@ -59,8 +83,8 @@ angular.module('safeApp')
         templateUrl: 'views/filedialog.html',
         controller: 'FiledialogCtrl',
         inputs: {
-            dialogType: 'file',
-            dialogTitle: 'Select file to add'
+          dialogType: 'file',
+          dialogTitle: 'Select file to add'
         }
       }).then(function(modal) {
         // The modal object has the element built, if this is a bootstrap modal
