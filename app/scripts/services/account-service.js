@@ -20,4 +20,8 @@ angular.module('safeApp')
     	return $http.get('/api/file/' + path);
     };
 
+    this.deleteFile = function(path) {
+      return $http.delete('/api/file/' + path);
+    };
+
   });

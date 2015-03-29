@@ -4,7 +4,7 @@ angular.module('safeApp')
   .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, AccountService, SettingsService, ModalService) {
 
     $scope.uploadingFiles = [];
-    $scope.fileinfos = [];
+    $scope.fileinfos = undefined;
     $scope.selectedFile = undefined;
 
     Client.setDocletId($location.search().docletId);
@@ -38,6 +38,19 @@ angular.module('safeApp')
     // Invoke init to fetch the needed data
     $scope.init();
 
+    $scope.refreshFileinfos = function() {
+      $scope.fileinfos = undefined;
+
+      AccountService.getFileinfo(Client.getSourcePath())
+        .success(function(fileinfo) {
+          Client.setFileInfos(fileinfo);
+          $scope.fileinfos = fileinfo;
+        })
+        .error(function() {
+          $scope.error = 'Failed to get info about encrypted files';
+        });
+    }
+
     $scope.fileSelected = function(fileinfo) {
       $scope.selectedFile = fileinfo;
     };
@@ -55,7 +68,11 @@ angular.module('safeApp')
 
       PipeService.run(commands, undefined, file.name, outputFilename)
         .success(function() {
-          file.status = 'Completed';
+          // Remove the file from uploading files
+          var index = $scope.uploadingFiles.indexOf(file);
+          $scope.uploadingFiles.splice(index, 1);
+          // Reload the fileinfo's
+          $scope.refreshFileinfos();
         })
         .error(function() {
           file.status = 'Failed to upload file';
@@ -63,7 +80,32 @@ angular.module('safeApp')
     };
 
     $scope.computeFileUrl = function(fileinfo) {
-      return '/api/file/' + Client.getSourcePath() + '/' + fileinfo.name + '?token=' + Client.getSessionId();
+      var commands = 'pipe=decrypt --pubkey=' + Client.getPublicKeyPath();
+
+      var args = '&token=' + Client.getSessionId();
+      args += '&input=' + Client.getSourcePath() + '/' + fileinfo.name;
+      args += '&download=' + fileinfo.name;
+
+      return '/api/pipe/run?' + commands + args;
+    };
+
+    $scope.delete = function(fileinfo) {
+
+      var filePath = Client.getSourcePath() + '/' + fileinfo.name;
+
+      $scope.info = 'Deleting file, please wait';
+
+      AccountService.deleteFile(filePath)
+        .success(function() {
+          $scope.info = undefined;
+
+          var index = $scope.fileinfos.indexOf(fileinfo);
+          $scope.fileinfos.splice(index, 1);
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to delete file';
+        });
     };
 
     $scope.download = function(fileinfo) {

@@ -11,6 +11,7 @@
   </button>
   {{error}}
 </div>
+<div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
 
 <div class="panel panel-default" ng-if="uploadingFiles.length > 0">
   <table class="table">
@@ -36,7 +37,7 @@
   </div>
 
   <div class="panel-body">
-    <table class="table table-hover">
+    <table class="table table-hover" ng-if="fileinfos !== undefined">
       <thead>
         <td>Name</td>
         <td>Modified</td>
@@ -47,14 +48,23 @@
           <td>
             <image src="images/folder.png" width="32px" height="32px" ng-if="file.isDir"></image>
             <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>
-            {{file.name}}
+            <a href="{{computeFileUrl(file)}}">{{file.name}}</a>
           </td>
           <td>{{file.modified}}</td>
           <td>{{file.size}}</td>
-          <td> <a href="{{computeFileUrl(file)}}">download</a> </td>
+          <td>
+            <button type="button" class="btn btn-default btn-xs btn-danger" ng-click="delete(file)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <div ng-if="fileinfos == undefined" class="jumbotron text-center">
+      <p>Loading, please wait</p>
+    </div>
+
   </div>
 
 </div>
