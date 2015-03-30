@@ -7,8 +7,10 @@ angular.module('safeApp')
     $scope.fileinfos = undefined;
     $scope.selectedFile = undefined;
 
-    Client.setDocletId($location.search().docletId);
+    Client.setDocletId($window.unescape($location.search().docletId));
     Client.setSessionId($window.unescape($location.search().token));
+
+    $scope.docletId = Client.getDocletId();
 
     $scope.init = function() {
 
