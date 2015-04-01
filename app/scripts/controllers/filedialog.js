@@ -84,6 +84,8 @@ angular.module('safeApp')
     $scope.fileSelected = function(selectedFile) {
 
       if (selectedFile.isDir === true) {
+        // Clear the current fileinfos list
+        $scope.fileinfos = undefined;
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo($scope.selected.account.id, selectedFile.path)
           .success(function(files) {

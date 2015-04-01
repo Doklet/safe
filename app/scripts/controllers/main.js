@@ -51,7 +51,7 @@ angular.module('safeApp')
         .error(function() {
           $scope.error = 'Failed to get info about encrypted files';
         });
-    }
+    };
 
     $scope.fileSelected = function(fileinfo) {
       $scope.selectedFile = fileinfo;
