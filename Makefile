@@ -4,6 +4,16 @@ name=safe
 user=root
 node=digitalocean-prod-0
 
+clean:
+	grunt clean
+
+build:
+	grunt build
+
+stage:
+	-rm app/bower_components
+	ln -s $(PWD)/bower_components app/bower_components
+
 distro-clean:
 	rm -rf distro
 
@@ -24,3 +34,8 @@ deploy: distro
 	ls distro/$(name).zip
 	# Copy the distro to production
 	scp distro/$(name).zip $(user)@$(node):/var/lib/skyraid/packages/$(name).zip
+
+devdeploy: distro
+	-rm /var/lib/skyraid/packages/$(name).zip
+	-mkdir /var/lib/skyraid/packages
+	cp distro/$(name).zip /var/lib/skyraid/packages/$(name).zip
