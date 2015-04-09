@@ -5,14 +5,12 @@
   </ul>
   <h3 class="text-muted">Safe</h3>
 </div>
-
 <div class="alert alert-danger" ng-show="error!=undefined">
   <button type="button" class="close" ng-click="error=undefined"><span>&times;</span>
   </button>
   {{error}}
 </div>
 <div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
-
 <div class="panel panel-default" ng-if="uploadingFiles.length > 0">
   <table class="table">
     <tr ng-repeat="file in uploadingFiles">
@@ -28,16 +26,32 @@
   </table>
 </div>
 
-<div class="panel panel-default">
+<div class="jumbotron text-center" ng-if="state == SETTINGS_STATE.Loading">
+  <p>Loading, please wait</p>
+</div>
 
+<div class="jumbotron" ng-if="state == SETTINGS_STATE.NoSettingsAvailable">
+  <div class="container">
+    <h1>Welcome</h1>
+    <h4>Source folder</h4>
+    <p>For the safe to work you need to choose a source folder for your encrypted files. The source folder can be any folder in any of your account's</p>
+    <h4>Private Key</h4>
+    <p>To be able to add files to your safe a private key is needed</p>
+    <h4>Public Key</h4>
+    <p>To be able to retrieve a file from the safe a public key is needed</p>
+    <p><a class="btn btn-primary" ng-click="goToSettings()" role="button">Go To Settings &raquo;</a></p>
+  </div>
+</div>
+
+<div class="panel panel-default" ng-if="state == SETTINGS_STATE.Completed">
   <div class="panel-heading clearfix">
     <div class="btn-group pull-right" role="group">
       <button type="button" class="btn btn-success" ng-click="add()">Add File</button>
     </div>
+    <h5 class="panel-title">{{sourcePath}}</h5>
   </div>
-
   <div class="panel-body">
-    <table class="table table-hover" ng-if="fileinfos !== undefined">
+    <table class="table table-hover">
       <thead>
         <td>Name</td>
         <td>Modified</td>
@@ -60,11 +74,5 @@
         </tr>
       </tbody>
     </table>
-
-    <div ng-if="fileinfos == undefined" class="jumbotron text-center">
-      <p>Loading, please wait</p>
-    </div>
-
   </div>
-
 </div>

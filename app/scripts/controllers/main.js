@@ -3,6 +3,19 @@
 angular.module('safeApp')
   .controller('MainCtrl', function($scope, $window, $location, Client, PipeService, AccountService, SettingsService, ModalService) {
 
+    // The state of the progress of setting up the safe
+    $scope.SETTINGS_STATE = {
+      // Loading from server
+      Loading: 0,
+      // No setting has been set
+      NoSettingsAvailable: 1,
+      // The settings has been set
+      Completed: 2
+    };
+
+    $scope.state = $scope.SETTINGS_STATE.Loading;
+
+    $scope.sourcePath = '';
     $scope.uploadingFiles = [];
     $scope.fileinfos = undefined;
     $scope.selectedFile = undefined;
@@ -18,23 +31,31 @@ angular.module('safeApp')
         .success(function(settings) {
           Client.setSettings(settings);
 
+          $scope.sourcePath = settings.sourcePath;
+          
           AccountService.getFileinfo(settings.sourcePath)
             .success(function(fileinfo) {
               Client.setFileInfos(fileinfo);
               $scope.fileinfos = fileinfo;
+              $scope.state = $scope.SETTINGS_STATE.Completed;
             })
             .error(function() {
-              $scope.error = 'Failed to get info about encrypted files';
+              $scope.error = 'Failed to list encrypted files';
+              // Set the state to completed but the source path seems to be invalid
+              $scope.state = $scope.SETTINGS_STATE.Completed;
+              $scope.fileinfos = [];
             });
         })
         .error(function(response, status) {
           // The first time there is no saved settings, so a 404 is expected here
           if (status === 404) {
             // Expected
+            $scope.state = $scope.SETTINGS_STATE.NoSettingsAvailable;
           } else {
-            $scope.error = 'Failed to fetch settings' + status;
+            $scope.error = 'Failed to fetch settings ' + status;
           }
         });
+
     };
 
     // Invoke init to fetch the needed data

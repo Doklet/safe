@@ -35,7 +35,7 @@ deploy: distro
 	# Copy the distro to production
 	scp distro/$(name).zip $(user)@$(node):/var/lib/skyraid/packages/$(name).zip
 
-devdeploy: distro
+devdeploy: build distro
 	-rm /var/lib/skyraid/packages/$(name).zip
 	-mkdir /var/lib/skyraid/packages
 	cp distro/$(name).zip /var/lib/skyraid/packages/$(name).zip

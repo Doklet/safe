@@ -35,6 +35,14 @@ angular.module('safeApp')
     };
 
     this.getSettings = function() {
+      if (_settings === undefined) {
+        _settings = {
+          sourcePath: undefined,
+          publicKeyPath: undefined,
+          privateKeyPath: undefined
+        };
+      }
+      
       return _settings;
     };
 
