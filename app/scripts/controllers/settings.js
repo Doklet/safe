@@ -33,6 +33,7 @@ angular.module('safeApp')
         // you can call 'modal' to show it, if it's a custom modal just show or hide
         // it as you need to.
         modal.element.modal();
+        
         modal.close.then(function(absfilename) {
 
           $scope.settings.sourcePath = absfilename;

@@ -4,6 +4,10 @@ name=safe
 user=root
 node=digitalocean-prod-0
 
+init:
+	bower install
+	npm install
+
 clean:
 	grunt clean
 
@@ -11,7 +15,7 @@ build:
 	grunt build
 
 stage:
-	-rm app/bower_components
+	-rm -rf app/bower_components
 	ln -s $(PWD)/bower_components app/bower_components
 
 distro-clean:

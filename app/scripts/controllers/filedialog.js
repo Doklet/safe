@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('safeApp')
-  .controller('FiledialogCtrl', function($scope, close, AccountService, dialogType, dialogTitle) {
+  .controller('FiledialogCtrl', function($scope, $element, close, AccountService, dialogType, dialogTitle) {
 
     var DialogType = {
       file: 'file',
@@ -124,6 +124,10 @@ angular.module('safeApp')
 
     $scope.okClicked = function() {
       var fileSelected = $scope.computeSelectedFilePath();
+
+      //  Manually hide the modal using bootstrap.
+      $element.modal('hide');
+
       close(fileSelected, 200); // close, but give 200ms for bootstrap to animate
     };
 
