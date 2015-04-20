@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('safeApp')
-  .factory('AuthInterceptor', function($rootScope, $q, $log, $location, Client) {
+  .factory('AuthInterceptor', function($rootScope, $q, $log, $location, $window, Client) {
 
     return {
       request: function(config) {
@@ -14,9 +14,17 @@ angular.module('safeApp')
       },
 
       responseError: function(response) {
+        // handle the case where the user is not authenticated
         if (response.status === 401) {
-          // handle the case where the user is not authenticated
-          //$location.path('www.google.com');
+
+          if ($location.search().authUrl !== undefined) {
+
+            // Fetch the authUrl from the parameters
+            var authUrl = $window.unescape($location.search().authUrl);
+
+            // redirect user to signin form 
+            $window.top.location = authUrl;
+          }
         }
         return $q.reject(response);
       }
